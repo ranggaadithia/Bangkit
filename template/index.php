@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <h1>Hello, Bangkit!</h1>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis eveniet, laudantium illum totam doloremque quasi, aperiam odit sint asperiores consectetur recusandae vitae molestias vero, tempore dolorem natus. Blanditiis, alias voluptatem?</p>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 
