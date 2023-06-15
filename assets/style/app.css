@@ -1,3 +1,13 @@
 body {
   font-family: 'Poppins', sans-serif;
 }
+
+.card {
+  transition: .3s;
+}
+
+.card-roadmap:hover .card {
+
+  scale: 1.05;
+  transition: .3s;
+}
