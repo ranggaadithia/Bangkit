@@ -11,3 +11,7 @@ body {
   scale: 1.05;
   transition: .3s;
 }
+
+.mt-navbar {
+  margin-top: 150px;
+}
