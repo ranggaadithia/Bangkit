@@ -15,3 +15,11 @@ body {
 .mt-navbar {
   margin-top: 150px;
 }
+
+.btn-roadmap {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.btn-roadmap:hover {
+  box-shadow: 3px 5px 20px rgba(0, 123, 255, 0.2);
+}
