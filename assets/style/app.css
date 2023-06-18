@@ -31,3 +31,9 @@ body {
   box-shadow: 3px 5px 30px rgba(0, 0, 0, 0.1);
 }
 
+.img-cover {
+  background-image: url('../img/banner_login_1.png');
+  background-color: #cccccc;
+  background-size: cover;
+}
+
