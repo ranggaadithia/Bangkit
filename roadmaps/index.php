@@ -30,10 +30,10 @@
             <a class="nav-link active" aria-current="page" href="sales/">Flash Sale</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-3 active" href="courses/">Course</a>
+            <a class="nav-link mx-3 active" href="courses/">Courses</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-3 active" href="roadmaps/">Roadmap</a>
+            <a class="nav-link mx-3 active" href="roadmaps/">Roadmaps</a>
           </li>
         </ul>
       </div>
