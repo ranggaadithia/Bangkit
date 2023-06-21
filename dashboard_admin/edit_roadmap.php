@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require '../function/index.php';
 
@@ -7,17 +8,26 @@ if (!isset($_SESSION["login"]) && $_SESSION["role"] != "admin") {
   exit;
 }
 
-$roadmaps = query("SELECT * FROM roadmaps");
+$id = $_GET["id"];
+
+$roadmap = query("SELECT * FROM roadmaps WHERE id = '$id'")[0];
+
+
+if (isset($_POST["submit"])) {
+  var_dump($_POST);
+}
+
 
 
 ?>
+
 
 <html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>index | Bangkit</title>
+  <title>Edit Roadmap | Bangkit</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,7 +39,7 @@ $roadmaps = query("SELECT * FROM roadmaps");
 <body class="bg-body-tertiary">
 
 
-  <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
+  <!-- <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
 ">
@@ -65,54 +75,40 @@ $roadmaps = query("SELECT * FROM roadmaps");
         </div>
       </div>
     </div>
-  </nav>
+  </nav> -->
 
   <div class="container" style="margin-top: 150px;">
-    <div class="d-flex justify-content-between">
-      <h1>Roadmap</h1>
-      <a href="<?= getRootURL() ?>/dashboard_admin/add_roadmap.php " class="btn btn-primary" style="height: 40px;">add roadmap</a>
+
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="text-center">Edit Roadmap</h3>
+            <form action="" method="post" enctype="multipart/form-data">
+              <input type="hidden" value="<?= $roadmap["id"] ?>" name="id">
+              <input type="hidden" value="<?= $roadmap["image"] ?>" name="old_image">
+              <div class="mb-3">
+                <label for="name" class="form-label">Roadmap Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="<?= $roadmap["name"] ?>" />
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea type="text" rows="5" class="form-control" id="description" name="description"><?= $roadmap["description"] ?> </textarea>
+              </div>
+              <div class="mb-3">
+                <label for="image" class="form-label">image</label>
+                <br>
+                <img src="../assets/img-upload/<?= $roadmap["image"] ?>" alt="" class="my-3" style="width: 55px;">
+                <input class="form-control" type="file" id="image" name="image">
+              </div>
+              <button type="submit" name="submit" class="btn btn-primary">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <?php if (isset($_SESSION["add_roadmap"])) : ?>
-      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        New roadmap successfully added
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["add_roadmap"]) ?></button>
-      </div>
-    <?php endif; ?>
 
-    <?php if (isset($_SESSION["delete_roadmap"])) : ?>
-      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        The roadmap successfully deleted
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["delete_roadmap"]) ?></button>
-      </div>
-    <?php endif; ?>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Roadmap</th>
-          <th scope="col">Description</th>
-          <th scope="col">Action</th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <?php $i = 1; ?>
-        <?php foreach ($roadmaps as $roadmap) : ?>
-          <tr>
-            <th scope="row"> <?= $i++; ?></th>
-            <td><?= $roadmap["name"] ?></td>
-            <td><?= $roadmap["description"] ?>
-            </td>
-            <td> <a href="" class="btn btn-success">Course</a>
-              <a href="edit_roadmap.php?id=<?= $roadmap["id"]; ?>" class="btn btn-warning mt-1">Edit</a>
-              <a href="utility/deleteRoadmap.php?id=<?= $roadmap["id"]; ?>" class="btn mt-1 btn-danger" onclick="return confirm('Apakah anda yakin ingin mengapus data ini?');">Delete</a>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
   </div>
 
 

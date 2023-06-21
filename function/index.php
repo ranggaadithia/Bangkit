@@ -42,6 +42,13 @@ function addRoadmap($post)
   return mysqli_affected_rows($conn);
 }
 
+function deleteRoadmap($id)
+{
+  global $conn;
+  mysqli_query($conn, "DELETE FROM roadmaps WHERE id = $id");
+  return mysqli_affected_rows($conn);
+}
+
 function uploadImage()
 {
 
@@ -64,7 +71,7 @@ function uploadImage()
   $namaFileBaru .= '.';
   $namaFileBaru .= $ekstensiGambar;
 
-  move_uploaded_file($tmpName, '../assets/img/' . $namaFileBaru);
+  move_uploaded_file($tmpName, '../assets/img-upload/' . $namaFileBaru);
 
   return $namaFileBaru;
 }
