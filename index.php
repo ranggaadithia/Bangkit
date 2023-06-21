@@ -1,3 +1,8 @@
+<?php
+session_start();
+require 'function/index.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,7 +46,7 @@
       <div class="auth">
         <ul class="navbar-nav">
           <li class="nav-item mx-3">
-            <a class="py-3 px-4 bg-body-secondary rounded-pill text-decoration-none text-dark fw-bold" href="#">Masuk/Daftar</a>
+            <a class="py-3 px-4 bg-body-secondary rounded-pill text-decoration-none text-dark fw-bold" href="<?= getRootURL() ?>/login">Masuk/Daftar</a>
           </li>
         </ul>
       </div>

@@ -14,6 +14,8 @@ if (isset($_POST["login"])) {
       // set session
       $_SESSION['login'] = true;
       $_SESSION['name'] = $row['name'];
+      $_SESSION['id'] = $row['id'];
+      $_SESSION['role'] = $row['role'];
 
       if ($row["role"] == "student") {
         header("Location: ../dashboard/index.php");

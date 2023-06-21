@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require '../function/index.php';
 
@@ -7,8 +8,14 @@ if (!isset($_SESSION["login"]) && $_SESSION["role"] != "admin") {
   exit;
 }
 
-$roadmaps = query("SELECT * FROM roadmaps");
-
+if (isset($_POST["submit"])) {
+  if (addRoadmap($_POST) > 0) {
+    $_SESSION["add_roadmap"] = true;
+    header("Location: index.php");
+  } else {
+    echo mysqli_error($conn);
+  }
+}
 
 ?>
 
@@ -17,7 +24,7 @@ $roadmaps = query("SELECT * FROM roadmaps");
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>index | Bangkit</title>
+  <title>Add Roadmap | Bangkit</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,12 +34,10 @@ $roadmaps = query("SELECT * FROM roadmaps");
 </head>
 
 <body class="bg-body-tertiary">
-
-
   <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-">
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+      ">
     <div class="container py-2">
       <a class="navbar-brand" href="#">
         <img src="../assets/img/logo.svg" alt="Bangkit" width="55" />
@@ -67,52 +72,37 @@ $roadmaps = query("SELECT * FROM roadmaps");
     </div>
   </nav>
 
-  <div class="container" style="margin-top: 150px;">
-    <div class="d-flex justify-content-between">
-      <h1>Roadmap</h1> <a href="" class="btn btn-primary" style="height: 40px;">add roadmap</a>
-    </div>
-
-    <?php if (isset($_SESSION["add_roadmap"]) && !isset($_SESSION["roadmap_success_shown"])) : ?>
-      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        New roadmap successfully added
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <div class="container" style="margin-top: 150px">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="text-center">Add Roadmap</h3>
+            <form action="" method="post" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="name" class="form-label">Roadmap Name</label>
+                <input type="text" class="form-control" id="name" name="name" />
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea type="text" rows="5" class="form-control" id="description" name="description"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="icon" class="form-label">Icon</label>
+                <input class="form-control" type="file" id="icon" name="image" />
+              </div>
+              <button type="submit" name="submit" class="btn btn-primary">
+                Save
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
-      <?php $_SESSION["roadmap_success_shown"] = true; ?>
-    <?php endif; ?>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Roadmap</th>
-          <th scope="col">Description</th>
-          <th scope="col">Action</th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <?php $i = 1; ?>
-        <?php foreach ($roadmaps as $roadmap) : ?>
-          <tr>
-            <th scope="row"> <?= $i++; ?></th>
-            <td><?= $roadmap["name"] ?></td>
-            <td><?= $roadmap["description"] ?>
-            </td>
-            <td> <a href="" class="btn btn-success">Course</a>
-              <a href="" class="btn btn-warning">Edit</a>
-              <a href="" class="btn  mt-1 btn-danger">Delette</a>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-
-
-
-      </tbody>
-    </table>
+    </div>
   </div>
-
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script src="../assets/js/index.js"></script>
 </body>
+
+</html>

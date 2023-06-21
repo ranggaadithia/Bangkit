@@ -16,6 +16,59 @@ function query($query)
   return $rows;
 }
 
+function getRootURL()
+{
+  $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+  $host = $_SERVER['HTTP_HOST'];
+  $root = $protocol . $host;
+
+  return $root . '/bangkit';
+}
+
+
+function addRoadmap($post)
+{
+  global $conn;
+
+  $name = htmlspecialchars($post["name"]);
+  $description = htmlspecialchars($post["description"]);
+
+  $image = uploadImage();
+
+  $query = "INSERT INTO roadmaps VALUES (null, '$name', '$description', '$image')";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}
+
+function uploadImage()
+{
+
+  $namaFile = $_FILES['image']['name'];
+  $error = $_FILES['image']['error'];
+  $tmpName = $_FILES['image']['tmp_name'];
+
+  $ekstensiGambarValid = ['jpg', 'jpeg', 'png', 'svg'];
+  $ekstensiGambar = explode('.', $namaFile);
+  $ekstensiGambar = strtolower(end($ekstensiGambar));
+
+  if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+    echo "<script>
+						alert('yang anda upload bukan gambar!');
+					</script>";
+    return false;
+  }
+
+  $namaFileBaru = uniqid();
+  $namaFileBaru .= '.';
+  $namaFileBaru .= $ekstensiGambar;
+
+  move_uploaded_file($tmpName, '../assets/img/' . $namaFileBaru);
+
+  return $namaFileBaru;
+}
+
 
 function addUser($post)
 {

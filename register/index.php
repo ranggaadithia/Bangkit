@@ -6,9 +6,9 @@ if (isset($_POST["submit"])) {
   if (addUser($_POST) > 0) {
     $_SESSION['register_success'] = true;
     header('Location: ../login/index.php');
+  } else {
+    echo mysqli_error($conn);
   }
-} else {
-  echo mysqli_error($conn);
 }
 
 ?>
