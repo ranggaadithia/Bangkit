@@ -1,12 +1,33 @@
 <?php
+session_start();
+require '../function/index.php';
 
-if (isset($_POST['login'])) {
+if (isset($_POST["login"])) {
+  $email = $_POST["email"];
+  $password = $_POST["password"];
 
-  $email = $_POST['email'];
-  $password = $_POST['password'];
+  $result = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
 
-  echo $email;
+  if (mysqli_num_rows($result) == 1) {
+    $row = mysqli_fetch_assoc($result);
+    if (password_verify($password, $row["password"])) {
+      // set session
+      $_SESSION['login'] = true;
+      $_SESSION['name'] = $row['name'];
+
+      if ($row["role"] == "student") {
+        header("Location: ../dashboard/index.php");
+        exit;
+      } else if ($row["role"] == "admin") {
+        header("Location: ../dashboard_admin/index.php");
+        exit;
+      }
+    }
+  }
+
+  $error = true;
 }
+
 
 ?>
 
@@ -15,7 +36,7 @@ if (isset($_POST['login'])) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Title | Bangkit</title>
+  <title>Login | Bangkit</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,6 +52,18 @@ if (isset($_POST['login'])) {
       <div class="w-50">
         <img src="../assets/img/logo.svg" alt="" width="60" />
         <h1 class="mt-3 fw-bold">Login</h1>
+        <?php if (isset($_SESSION["register_success"])) : ?>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Congratulation</strong> your account successfuly created. Please login tu continue
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php endif; ?>
+        <?php if (isset($error)) : ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            your email or password is wrong
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php endif; ?>
         <p class="fw-light mt-3">
           Login to start learning
         </p>
