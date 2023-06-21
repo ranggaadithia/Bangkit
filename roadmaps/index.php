@@ -11,8 +11,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="../assets/style/app.css" />
 </head>
+
 <body class="bg-body-tertiary">
-<nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
+  <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
         background-color: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(10px);
       ">
@@ -149,7 +150,7 @@
         </ul>
       </div>
     </footer>
-    
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

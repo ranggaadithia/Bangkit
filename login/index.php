@@ -1,3 +1,15 @@
+<?php
+
+if (isset($_POST['login'])) {
+
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+
+  echo $email;
+}
+
+?>
+
 <html lang="en">
 
 <head>
@@ -24,17 +36,17 @@
         </p>
         <div class="card rounded-4 border-0 shadow-sm mt-3">
           <div class="card-body p-4">
-            <form action="">
+            <form action="" method="post">
               <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control rounded-4" id="email" autocomplete="off" />
+                <input type="email" class="form-control rounded-4" id="email" autocomplete="off" name="email" />
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control rounded-4" id="password" autocomplete="off" />
+                <input type="password" class="form-control rounded-4" id="password" autocomplete="off" name="password" />
               </div>
-              <button type="submit" class="btn btn-primary rounded-pill w-100 py-2 fw-bold">
-                Register
+              <button type="submit" class="btn btn-primary rounded-pill w-100 py-2 fw-bold" name="login">
+                Login
               </button>
             </form>
             <p class="text-center">
@@ -45,6 +57,8 @@
       </div>
     </div>
   </div>
+
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script src="../assets/js/index.js"></script>
