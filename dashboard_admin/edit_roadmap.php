@@ -39,7 +39,7 @@ if (isset($_POST["submit"])) {
 <body class="bg-body-tertiary">
 
 
-  <!-- <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
+  <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
 ">
@@ -75,7 +75,7 @@ if (isset($_POST["submit"])) {
         </div>
       </div>
     </div>
-  </nav> -->
+  </nav>
 
   <div class="container" style="margin-top: 150px;">
 
