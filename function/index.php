@@ -42,6 +42,33 @@ function addRoadmap($post)
   return mysqli_affected_rows($conn);
 }
 
+function editRoadmap($post)
+{
+  global $conn;
+
+  $id = $post['id'];
+  $name = htmlspecialchars($post['name']);
+  $description = htmlspecialchars($post['description']);
+  $old_image = htmlspecialchars($post['old_image']);
+
+  if ($_FILES['image']['error'] === 4) {
+    $image = $old_image;
+  } else {
+    $image = uploadImage();
+  }
+
+  $query = "UPDATE roadmaps SET
+            name = '$name',
+            description = '$description',
+            image = '$image'
+            WHERE id = '$id';
+  ";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}
+
 function deleteRoadmap($id)
 {
   global $conn;

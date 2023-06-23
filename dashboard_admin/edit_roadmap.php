@@ -14,7 +14,13 @@ $roadmap = query("SELECT * FROM roadmaps WHERE id = '$id'")[0];
 
 
 if (isset($_POST["submit"])) {
-  var_dump($_POST);
+  if (editRoadmap($_POST) > 0) {
+    $_SESSION["edit_roadmap"] = true;
+    header("Location: index.php");
+    exit;
+  } else {
+    echo mysqli_error($conn);
+  }
 }
 
 

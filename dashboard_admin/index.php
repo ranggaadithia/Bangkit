@@ -73,10 +73,18 @@ $roadmaps = query("SELECT * FROM roadmaps");
       <a href="<?= getRootURL() ?>/dashboard_admin/add_roadmap.php " class="btn btn-primary" style="height: 40px;">add roadmap</a>
     </div>
 
+
     <?php if (isset($_SESSION["add_roadmap"])) : ?>
       <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
         New roadmap successfully added
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["add_roadmap"]) ?></button>
+      </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION["edit_roadmap"])) : ?>
+      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
+        The roadmap successfully edited
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["edit_roadmap"]) ?></button>
       </div>
     <?php endif; ?>
 
