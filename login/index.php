@@ -16,19 +16,21 @@ if (isset($_POST["login"])) {
       $_SESSION['name'] = $row['name'];
       $_SESSION['id'] = $row['id'];
       $_SESSION['role'] = $row['role'];
-
-      if ($row["role"] == "student") {
-        header("Location: ../dashboard/index.php");
-        exit;
-      } else if ($row["role"] == "admin") {
-        header("Location: ../dashboard_admin/index.php");
-        exit;
-      }
     }
   }
 
   $error = true;
 }
+
+if (isset($_SESSION["role"])) {
+  if ($_SESSION["role"] == "student") {
+    header("Location: ../dashboard/index.php");
+  } else if ($_SESSION["role"] == "admin") {
+    header("Location: ../dashboard_admin/index.php");
+    exit;
+  }
+}
+
 
 
 ?>

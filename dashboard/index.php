@@ -1,3 +1,14 @@
+<?php
+session_start();
+require '../function/index.php';
+
+if (!isset($_SESSION['login'])) {
+  header("Location: ../login");
+  exit;
+}
+
+?>
+
 <html lang="en">
 
 <head>
@@ -150,7 +161,7 @@
           <li class="nav-item mb-2">
             <a href="#" class="nav-link p-0 text-body-secondary">About</a>
           </li>
-        </ul>   
+        </ul>
       </div>
     </footer>
   </div>
