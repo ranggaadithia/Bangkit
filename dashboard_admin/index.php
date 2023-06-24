@@ -2,7 +2,7 @@
 session_start();
 require '../function/index.php';
 
-if (!isset($_SESSION["login"]) || isset($_SESSION["role"]) != "admin") {
+if (!isset($_SESSION["login"]) || $_SESSION["role"] != "admin") {
   Header("Location: ../login");
   exit;
 }
