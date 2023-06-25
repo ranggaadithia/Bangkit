@@ -99,6 +99,13 @@ function addCourse($post)
   return mysqli_affected_rows($conn);
 }
 
+function deleteCourse($id)
+{
+  global $conn;
+  mysqli_query($conn, "DELETE FROM courses WHERE id = $id");
+  return mysqli_affected_rows($conn);
+}
+
 function uploadImage()
 {
 

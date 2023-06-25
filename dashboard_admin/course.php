@@ -87,6 +87,12 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["add_course"]) ?></button>
       </div>
     <?php endif; ?>
+    <?php if (isset($_SESSION["delete_course"])) : ?>
+      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
+        The course successfully deleted
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["delete_course"]) ?></button>
+      </div>
+    <?php endif; ?>
     <table class="table">
       <thead>
         <tr>
@@ -117,7 +123,7 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
             <td>
               <a href="" class="btn btn-success">Video</a>
               <a href="" class="btn btn-warning">Edit</a>
-              <a href="" class="btn btn-danger">Delete</a>
+              <a href="delete_course.php?id=<?= $course['id']; ?>&rid=<?= $roadmap_id; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin mengapus data ini?');">Delete</a>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -128,6 +134,6 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
 
 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script src="../assets/js/index.js"></script>
 </body>
