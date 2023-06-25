@@ -142,6 +142,60 @@ function deleteCourse($id)
   return mysqli_affected_rows($conn);
 }
 
+function addVideo($post)
+{
+  global $conn;
+
+  $title = htmlspecialchars($post['title']);
+  $description = htmlspecialchars($post['description']);
+  $url = htmlspecialchars($post['url']);
+  $input_time = htmlspecialchars($post['duration']);
+
+  $duration = "00:" . $input_time;
+
+
+  $course_id = $post['course_id'];
+
+  $query = "INSERT INTO videos 
+            VALUES 
+            (null, '$title', '$description', '$url', '$duration', '$course_id')";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}
+
+function editVideo($post)
+{
+  global $conn;
+
+  $id = $post['id'];
+  $title = htmlspecialchars($post['title']);
+  $description = htmlspecialchars($post['description']);
+  $url = htmlspecialchars($post['url']);
+  $input_time = htmlspecialchars($post['duration']);
+
+  $duration = "00:" . $input_time;
+
+  $query = "UPDATE videos SET 
+            title = '$title',
+            description = '$description',
+            url = '$url',
+            duration = '$duration'
+            WHERE id = '$id'";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}
+
+function deleteVideo($id)
+{
+  global $conn;
+  mysqli_query($conn, "DELETE FROM videos WHERE id = $id");
+  return mysqli_affected_rows($conn);
+}
+
 function uploadImage()
 {
 

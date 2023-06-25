@@ -9,13 +9,11 @@ if (!isset($_SESSION["login"]) || $_SESSION["role"] != "admin") {
   exit;
 }
 
-$roadmap_id = $_GET['rid'];
+$course_id = $_GET['cid'];
 
-$roadmap = query("SELECT * FROM roadmaps WHERE id = '$roadmap_id'")[0];
+$course = query("SELECT * FROM courses WHERE id = '$course_id'")[0];
 
-$courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
-
-
+$videos = query("SELECT * FROM videos WHERE course_id = '$course_id'");
 
 ?>
 
@@ -24,7 +22,7 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Course | Bangkit</title>
+  <title>Video | Bangkit</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -74,72 +72,64 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
     </div>
   </nav>
 
-
-
   <div class="container" style="margin-top: 150px;">
     <div class="d-flex justify-content-between">
-      <h1>Courses From <?= $roadmap["name"]; ?></h1>
-      <a href="add_course.php?rid=<?= $roadmap_id; ?>" class="btn btn-primary" style="height: 40px;">Add Course</a>
+      <h1><?= $course['name']; ?> Videos</h1>
+      <a href="add_video.php?cid=<?= $course_id; ?>" class="btn btn-primary" style="height: 40px;">Add Video</a>
     </div>
-    <?php if (isset($_SESSION["add_course"])) : ?>
+    <?php if (isset($_SESSION["add_video"])) : ?>
       <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        New Course successfully added
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["add_course"]) ?></button>
+        New video successfully added
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["add_video"]) ?></button>
       </div>
     <?php endif; ?>
-    <?php if (isset($_SESSION["edit_course"])) : ?>
+    <?php if (isset($_SESSION["edit_video"])) : ?>
       <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        New Course successfully added
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["edit_course"]) ?></button>
+        the video successfully edited
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["edit_video"]) ?></button>
       </div>
     <?php endif; ?>
-    <?php if (isset($_SESSION["delete_course"])) : ?>
+    <?php if (isset($_SESSION["delete_video"])) : ?>
       <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        The course successfully deleted
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["delete_course"]) ?></button>
+        The Video successfully deleted
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["delete_video"]) ?></button>
       </div>
     <?php endif; ?>
     <table class="table">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Price</th>
-          <th scope="col">Discount</th>
-          <th scope="col">Mentor</th>
-          <th scope="col">Category</th>
-          <th scope="col">Members</th>
-          <th scope="col">Last Updated</th>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Duration</th>
           <th scope="col">Action</th>
+
         </tr>
       </thead>
-
       <tbody>
         <?php $i = 1; ?>
-        <?php foreach ($courses as $course) : ?>
+        <?php
+        foreach ($videos as $video) :
+        ?>
           <tr>
             <th scope="row"><?= $i++; ?></th>
-            <td><?= $course['name']; ?></td>
-            <td><?= money_format($course['price']); ?></td>
-            <td><?= $course['discount']; ?>%</td>
-            <td><?= getMentorName($course['mentor_id']) ?></td>
-            <td><?= getCategoryName($course['category_id']) ?></td>
-            <td><?= total_enrollment($course['id']) ?></td>
-            <td><?= $course['updated']; ?></td>
+            <td><?= $video['title']; ?></td>
+            <td><?= $video['description']; ?></td>
+            <td><?= substr($video['duration'], 3); ?></td>
             <td>
-              <a href="video.php?cid=<?= $course['id']; ?>" class="btn btn-success">Video</a>
-              <a href="edit_course.php?id=<?= $course['id']; ?>&rid=<?= $roadmap_id; ?>" class="btn btn-warning">Edit</a>
-              <a href="delete_course.php?id=<?= $course['id']; ?>&rid=<?= $roadmap_id; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin mengapus data ini?');">Delete</a>
+              <a href="edit_video.php?id=<?= $video['id']; ?>&cid=<?= $course_id; ?>" class="btn btn-warning">Edit</a>
+              <a href="delete_video.php?id=<?= $video['id']; ?>&cid=<?= $course_id; ?>" class="btn  mt-1 btn-danger">Delete</a>
             </td>
           </tr>
-        <?php endforeach; ?>
-
+        <?php
+        endforeach;
+        ?>
       </tbody>
     </table>
   </div>
 
 
 
-  <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script src="../assets/js/index.js"></script>
 </body>
