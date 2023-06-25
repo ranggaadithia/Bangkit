@@ -1,13 +1,20 @@
 <?php
 session_start();
 require '../function/index.php';
+require '../function/utility.php';
+
 
 if (!isset($_SESSION["login"]) || $_SESSION["role"] != "admin") {
   Header("Location: ../login");
   exit;
 }
 
-$roadmaps = query("SELECT * FROM roadmaps");
+$roadmap_id = $_GET['id'];
+
+$roadmap = query("SELECT * FROM roadmaps WHERE id = '$roadmap_id'")[0];
+
+$courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
+
 
 
 ?>
@@ -17,7 +24,7 @@ $roadmaps = query("SELECT * FROM roadmaps");
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>index | Bangkit</title>
+  <title>Course | Bangkit</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -67,58 +74,48 @@ $roadmaps = query("SELECT * FROM roadmaps");
     </div>
   </nav>
 
+
+
   <div class="container" style="margin-top: 150px;">
     <div class="d-flex justify-content-between">
-      <h1>Roadmap</h1>
-      <a href="<?= getRootURL() ?>/dashboard_admin/add_roadmap.php " class="btn btn-primary" style="height: 40px;">add roadmap</a>
+      <h1>Courses From <?= $roadmap["name"]; ?></h1> <a href="" class="btn btn-primary" style="height: 40px;">Add Course</a>
     </div>
-
-
-    <?php if (isset($_SESSION["add_roadmap"])) : ?>
-      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        New roadmap successfully added
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["add_roadmap"]) ?></button>
-      </div>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION["edit_roadmap"])) : ?>
-      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        The roadmap successfully edited
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["edit_roadmap"]) ?></button>
-      </div>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION["delete_roadmap"])) : ?>
-      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
-        The roadmap successfully deleted
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["delete_roadmap"]) ?></button>
-      </div>
-    <?php endif; ?>
 
     <table class="table">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Roadmap</th>
-          <th scope="col">Description</th>
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Discount</th>
+          <th scope="col">Mentor</th>
+          <th scope="col">Category</th>
+          <th scope="col">Members</th>
+          <th scope="col">Last Updated</th>
           <th scope="col">Action</th>
-
         </tr>
       </thead>
+
       <tbody>
         <?php $i = 1; ?>
-        <?php foreach ($roadmaps as $roadmap) : ?>
+        <?php foreach ($courses as $course) : ?>
           <tr>
-            <th scope="row"> <?= $i++; ?></th>
-            <td><?= $roadmap["name"] ?></td>
-            <td><?= $roadmap["description"] ?>
-            </td>
-            <td> <a href="course.php?id=<?= $roadmap['id']; ?>" class="btn btn-success">Course</a>
-              <a href="edit_roadmap.php?id=<?= $roadmap["id"]; ?>" class="btn btn-warning mt-1">Edit</a>
-              <a href="utility/deleteRoadmap.php?id=<?= $roadmap["id"]; ?>" class="btn mt-1 btn-danger" onclick="return confirm('Apakah anda yakin ingin mengapus data ini?');">Delete</a>
+            <th scope="row"><?= $i++; ?></th>
+            <td><?= $course['name']; ?></td>
+            <td><?= money_format($course['price']); ?></td>
+            <td><?= $course['discount']; ?>%</td>
+            <td><?= getMentorName($course['mentor_id']) ?></td>
+            <td><?= getCategoryName($course['category_id']) ?></td>
+            <td><?= total_enrollment($course['id']) ?></td>
+            <td><?= $course['updated']; ?></td>
+            <td>
+              <a href="" class="btn btn-success">Video</a>
+              <a href="" class="btn btn-warning">Edit</a>
+              <a href="" class="btn btn-danger">Delete</a>
             </td>
           </tr>
         <?php endforeach; ?>
+
       </tbody>
     </table>
   </div>
