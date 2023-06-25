@@ -113,7 +113,7 @@ $roadmaps = query("SELECT * FROM roadmaps");
             <td><?= $roadmap["name"] ?></td>
             <td><?= $roadmap["description"] ?>
             </td>
-            <td> <a href="course.php?id=<?= $roadmap['id']; ?>" class="btn btn-success">Course</a>
+            <td> <a href="course.php?rid=<?= $roadmap['id']; ?>" class="btn btn-success">Course</a>
               <a href="edit_roadmap.php?id=<?= $roadmap["id"]; ?>" class="btn btn-warning mt-1">Edit</a>
               <a href="utility/deleteRoadmap.php?id=<?= $roadmap["id"]; ?>" class="btn mt-1 btn-danger" onclick="return confirm('Apakah anda yakin ingin mengapus data ini?');">Delete</a>
             </td>

@@ -76,6 +76,29 @@ function deleteRoadmap($id)
   return mysqli_affected_rows($conn);
 }
 
+function addCourse($post)
+{
+  global $conn;
+
+
+  $name = htmlspecialchars($post['name']);
+  $description = htmlspecialchars($post['description']);
+  $image = uploadImage();
+  $price = htmlspecialchars($post['price']);
+  $discount = htmlspecialchars($post['discount']);
+  $mentor_id = $post['mentor_id'];
+  $category_id = $post['category_id'];
+  $roadmap_id = $post['roadmap_id'];
+
+  $query = "INSERT INTO 
+  `courses` (`name`, `description`, `image`, `price`, `discount`, `roadmap_id`, `mentor_id`, `category_id`) 
+  VALUES ('$name', '$description', '$image', '$price', '$discount', '$roadmap_id', '$mentor_id', '$category_id')";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}
+
 function uploadImage()
 {
 
@@ -83,7 +106,7 @@ function uploadImage()
   $error = $_FILES['image']['error'];
   $tmpName = $_FILES['image']['tmp_name'];
 
-  $ekstensiGambarValid = ['jpg', 'jpeg', 'png', 'svg'];
+  $ekstensiGambarValid = ['jpg', 'jpeg', 'png', 'svg', 'webp'];
   $ekstensiGambar = explode('.', $namaFile);
   $ekstensiGambar = strtolower(end($ekstensiGambar));
 

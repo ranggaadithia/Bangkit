@@ -23,8 +23,8 @@ function money_format($price)
 
 function total_enrollment($course_id)
 {
-  $totalMember = query("SELECT COUNT(*) AS total_enrollment FROM user_course 
+  $result = query("SELECT COUNT(*) AS total_enrollment FROM user_course 
   WHERE course_id = '$course_id'")[0];
 
-  return $totalMember['total_enrollment'];
+  return $result['total_enrollment'];
 }

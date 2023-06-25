@@ -9,7 +9,7 @@ if (!isset($_SESSION["login"]) || $_SESSION["role"] != "admin") {
   exit;
 }
 
-$roadmap_id = $_GET['id'];
+$roadmap_id = $_GET['rid'];
 
 $roadmap = query("SELECT * FROM roadmaps WHERE id = '$roadmap_id'")[0];
 
@@ -78,9 +78,15 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
 
   <div class="container" style="margin-top: 150px;">
     <div class="d-flex justify-content-between">
-      <h1>Courses From <?= $roadmap["name"]; ?></h1> <a href="" class="btn btn-primary" style="height: 40px;">Add Course</a>
+      <h1>Courses From <?= $roadmap["name"]; ?></h1>
+      <a href="add_course.php?rid=<?= $roadmap_id; ?>" class="btn btn-primary" style="height: 40px;">Add Course</a>
     </div>
-
+    <?php if (isset($_SESSION["add_course"])) : ?>
+      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
+        New Course successfully added
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["add_course"]) ?></button>
+      </div>
+    <?php endif; ?>
     <table class="table">
       <thead>
         <tr>
