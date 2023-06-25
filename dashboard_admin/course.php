@@ -87,6 +87,12 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["add_course"]) ?></button>
       </div>
     <?php endif; ?>
+    <?php if (isset($_SESSION["edit_course"])) : ?>
+      <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
+        New Course successfully added
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><?php unset($_SESSION["edit_course"]) ?></button>
+      </div>
+    <?php endif; ?>
     <?php if (isset($_SESSION["delete_course"])) : ?>
       <div class="alert alert-success my-3 alert-dismissible fade show" role="alert">
         The course successfully deleted
@@ -122,7 +128,7 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
             <td><?= $course['updated']; ?></td>
             <td>
               <a href="" class="btn btn-success">Video</a>
-              <a href="" class="btn btn-warning">Edit</a>
+              <a href="edit_course.php?id=<?= $course['id']; ?>&rid=<?= $roadmap_id; ?>" class="btn btn-warning">Edit</a>
               <a href="delete_course.php?id=<?= $course['id']; ?>&rid=<?= $roadmap_id; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin mengapus data ini?');">Delete</a>
             </td>
           </tr>

@@ -14,25 +14,28 @@ $categories = query("SELECT * FROM category_class");
 
 
 $roadmap_id = $_GET['rid'];
+$id = $_GET['id'];
+
+$course = query("SELECT * FROM courses WHERE id = '$id'")[0];
 
 if (isset($_POST["submit"])) {
-  if (addCourse($_POST) > 0) {
-    $_SESSION["add_course"] = true;
+  if (editCourse($_POST) > 0) {
+    $_SESSION["edit_course"] = true;
     header("Location: course.php?rid=$roadmap_id");
+    exit;
   } else {
     echo mysqli_error($conn);
   }
 }
 
-
-
 ?>
+
 <html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Add Course | Bangkit</title>
+  <title>Edit Course | Bangkit</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -53,7 +56,7 @@ if (isset($_POST["submit"])) {
         <img src="../assets/img/logo.svg" alt="Bangkit" width="55" />
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-Image"></span>
+        <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-5">
@@ -88,19 +91,22 @@ if (isset($_POST["submit"])) {
       <div class="col-10">
         <div class="card">
           <div class="card-body">
-            <h3 class="text-center">Add Course</h3>
+            <h3 class="text-center">Edit Course</h3>
             <form action="" method="post" enctype="multipart/form-data">
-              <input type="hidden" value="<?= $roadmap_id; ?>" name="roadmap_id">
+              <input type="hidden" value="<?= $course['id']; ?>" name="id">
+              <input type="hidden" value="<?= $course['image']; ?>" name="old_image">
               <div class="mb-3">
                 <label for="name" class="form-label">Course Name</label>
-                <input type="text" class="form-control" id="name" name="name" autocomplete="off" />
+                <input type="text" class="form-control" id="name" name="name" autocomplete="off" value="<?= $course['name']; ?>" />
               </div>
               <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea type="text" rows="5" class="form-control" id="description" name="description"></textarea>
+                <textarea type="text" rows="5" class="form-control" id="description" name="description"><?= $course['description']; ?></textarea>
               </div>
               <div class="mb-3">
                 <label for="Image" class="form-label">Image</label>
+                <br>
+                <img src="../assets/img-upload/<?= $course['image']; ?>" alt="" class="w-50 img-thumbnail mb-1">
                 <input class="form-control" type="file" id="Image" name="image">
               </div>
               <div class="d-flex">
@@ -108,13 +114,13 @@ if (isset($_POST["submit"])) {
                   <label for="price" class="form-label">Price</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text" id="price">Rp </span>
-                    <input type="number" class="form-control" aria-describedby="price" name="price" id="price">
+                    <input type="number" class="form-control" aria-describedby="price" name="price" id="price" value="<?= $course['price']; ?>">
                   </div>
                 </div>
                 <div class="w-25">
                   <label for="price" class="form-label">Discount</label>
                   <div class="input-group mb-3">
-                    <input type="number" class="form-control" aria-describedby="discount" name="discount" id="discount">
+                    <input type="number" class="form-control" aria-describedby="discount" name="discount" id="discount" value="<?= $course['discount']; ?>">
                     <span class="input-group-text" id="discount">%</span>
                   </div>
                 </div>
@@ -123,14 +129,15 @@ if (isset($_POST["submit"])) {
               <div class="mb-3">
                 <label for="mentor">Mentor</label>
                 <select class="form-select w-50" aria-label="mentor" name="mentor_id">
-                  <option selected>Select Mentor</option>
                   <?php
                   foreach ($mentors as $mentor) :
                   ?>
-                    <option value="<?= $mentor['id']; ?>"><?= $mentor['name']; ?></option>
+                    <option <?php if ($course['mentor_id'] == $mentor['id']) : ?> selected <?php endif; ?> value="<?= $mentor['id']; ?>"><?= $mentor['name']; ?></option>
                   <?php
                   endforeach;
                   ?>
+
+
                 </select>
               </div>
 
@@ -141,7 +148,7 @@ if (isset($_POST["submit"])) {
                   <?php
                   foreach ($categories as $category) :
                   ?>
-                    <option value="<?= $category['id']; ?>"><?= $category["name"]; ?></option>
+                    <option <?php if ($course['category_id'] == $category['id']) : ?> selected <?php endif; ?> value="<?= $category['id']; ?>"><?= $category["name"]; ?></option>
                   <?php
                   endforeach;
                   ?>

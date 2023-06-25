@@ -42,6 +42,37 @@ function addRoadmap($post)
   return mysqli_affected_rows($conn);
 }
 
+
+
+function deleteRoadmap($id)
+{
+  global $conn;
+  mysqli_query($conn, "DELETE FROM roadmaps WHERE id = $id");
+  return mysqli_affected_rows($conn);
+}
+
+function addCourse($post)
+{
+  global $conn;
+
+  $name = htmlspecialchars($post['name']);
+  $description = htmlspecialchars($post['description']);
+  $image = uploadImage();
+  $price = htmlspecialchars($post['price']);
+  $discount = htmlspecialchars($post['discount']);
+  $mentor_id = $post['mentor_id'];
+  $category_id = $post['category_id'];
+  $roadmap_id = $post['roadmap_id'];
+
+  $query = "INSERT INTO 
+  `courses` (`name`, `description`, `image`, `price`, `discount`, `roadmap_id`, `mentor_id`, `category_id`) 
+  VALUES ('$name', '$description', '$image', '$price', '$discount', '$roadmap_id', '$mentor_id', '$category_id')";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}
+
 function editRoadmap($post)
 {
   global $conn;
@@ -69,30 +100,35 @@ function editRoadmap($post)
   return mysqli_affected_rows($conn);
 }
 
-function deleteRoadmap($id)
-{
-  global $conn;
-  mysqli_query($conn, "DELETE FROM roadmaps WHERE id = $id");
-  return mysqli_affected_rows($conn);
-}
-
-function addCourse($post)
+function editCourse($post)
 {
   global $conn;
 
-
+  $id = $post['id'];
   $name = htmlspecialchars($post['name']);
   $description = htmlspecialchars($post['description']);
-  $image = uploadImage();
+  $old_image = htmlspecialchars($post['old_image']);
   $price = htmlspecialchars($post['price']);
   $discount = htmlspecialchars($post['discount']);
   $mentor_id = $post['mentor_id'];
   $category_id = $post['category_id'];
-  $roadmap_id = $post['roadmap_id'];
 
-  $query = "INSERT INTO 
-  `courses` (`name`, `description`, `image`, `price`, `discount`, `roadmap_id`, `mentor_id`, `category_id`) 
-  VALUES ('$name', '$description', '$image', '$price', '$discount', '$roadmap_id', '$mentor_id', '$category_id')";
+
+  if ($_FILES['image']['error'] === 4) {
+    $image = $old_image;
+  } else {
+    $image = uploadImage();
+  }
+
+  $query = "UPDATE courses SET 
+            name = '$name',
+            description = '$description',
+            image = '$image',
+            price = '$price',
+            discount = '$discount',
+            mentor_id = '$mentor_id',
+            category_id = '$category_id'
+            WHERE id = '$id';";
 
   mysqli_query($conn, $query);
 
