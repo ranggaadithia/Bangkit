@@ -240,3 +240,16 @@ function addUser($post)
 
   return mysqli_affected_rows($conn);
 }
+
+
+function userEnroll($user_id, $course_id)
+{
+  global $conn;
+
+  $query = "INSERT INTO user_course (`user_id`, `course_id`) 
+  VALUES ('$user_id', '$course_id')";
+
+  mysqli_query($conn, $query);
+
+  return mysqli_affected_rows($conn);
+}

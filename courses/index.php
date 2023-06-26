@@ -1,3 +1,14 @@
+<?php
+session_start();
+require '../function/index.php';
+require '../function/utility.php';
+
+$courses = query("SELECT * FROM courses ORDER BY RAND()");
+
+$new_courses = query("SELECT * FROM courses ORDER BY `release` DESC LIMIT 4")
+
+?>
+
 <html lang="en">
 
 <head>
@@ -57,48 +68,66 @@
       </p>
       <div class="row mt-5">
         <h4 class="fw-semibold">New Realesed</h4>
-        <?php for ($i = 0; $i < 4; $i++) : ?>
+        <?php foreach ($new_courses as $course) : ?>
           <div class="col-lg-3 mt-3">
-            <a href="" class="card-roadmap text-decoration-none">
+            <a href="course.php?cid=<?= $course['id']; ?>" class="card-roadmap text-decoration-none">
               <div class="card border-0 shadow rounded-4 overflow-hidden">
-                <img src="../assets/img/course1.png" class="card-img-top" alt="..." />
+                <img src="../assets/img-upload/<?= $course['image']; ?>" class="card-img-top" alt="..." />
                 <div class="card-body">
                   <h5 class="card-title fw-semibold">
-                    Build e-Wallet Mobile Apps
+                    <?= $course['name']; ?>
                   </h5>
-                  <p class="fw-light mt-2">Rp. 780.000</p>
+                  <div class="d-flex">
+                    <?php
+                    if ($course['discount'] > 0) :
+                    ?>
+                      <p class="fw-normal mt-2 text-danger"><s><?= money_format($course['price']); ?></s></p>
+                    <?php
+                    endif;
+                    ?>
+                    <p class="fw-normal mt-2 ms-2"><?= discount($course['price'], $course['discount']); ?></p>
+                  </div>
                   <div class="d-flex align-items-center">
                     <i class="bi bi-person-fill text-primary fs-5"></i>
-                    <span class="fw-light text-secondary">(79)</span>
+                    <span class="fw-light text-secondary">(<?= total_enrollment($course['id']); ?>)</span>
                   </div>
                 </div>
               </div>
             </a>
           </div>
-        <?php endfor; ?>
+        <?php endforeach; ?>
       </div>
       <div class="row mt-5">
         <h4 class="fw-semibold">Browse Course <br>
           According to your career</h4>
-        <?php for ($i = 0; $i < 10; $i++) : ?>
+        <?php foreach ($courses as $course) : ?>
           <div class="col-lg-3 mt-3">
-            <a href="" class="card-roadmap text-decoration-none">
+            <a href="course.php?cid=<?= $course['id']; ?>" class="card-roadmap text-decoration-none">
               <div class="card border-0 shadow rounded-4 overflow-hidden">
-                <img src="../assets/img/course2.png" class="card-img-top" alt="..." />
+                <img src="../assets/img-upload/<?= $course['image']; ?>" class="card-img-top" alt="..." />
                 <div class="card-body">
                   <h5 class="card-title fw-semibold">
-                    Build e-Wallet Mobile Apps
+                    <?= $course['name']; ?>
                   </h5>
-                  <p class="fw-light mt-2">Rp. 780.000</p>
+                  <div class="d-flex">
+                    <?php
+                    if ($course['discount'] > 0) :
+                    ?>
+                      <p class="fw-normal mt-2 text-danger"><s><?= money_format($course['price']); ?></s></p>
+                    <?php
+                    endif;
+                    ?>
+                    <p class="fw-normal mt-2 ms-2"><?= discount($course['price'], $course['discount']); ?></p>
+                  </div>
                   <div class="d-flex align-items-center">
                     <i class="bi bi-person-fill text-primary fs-5"></i>
-                    <span class="fw-light text-secondary">(79)</span>
+                    <span class="fw-light text-secondary">(<?= total_enrollment($course['id']); ?>)</span>
                   </div>
                 </div>
               </div>
             </a>
           </div>
-        <?php endfor; ?>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>

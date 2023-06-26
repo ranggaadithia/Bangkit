@@ -1,11 +1,18 @@
 <?php
 session_start();
 require '../function/index.php';
+require '../function/utility.php';
 
 if (!isset($_SESSION['login'])) {
   header("Location: ../login");
   exit;
 }
+
+$currentUserId = $_SESSION['id'];
+
+$courses = query("SELECT courses.* FROM courses
+JOIN user_course ON courses.id = user_course.course_id
+WHERE user_course.user_id = $currentUserId");
 
 ?>
 
@@ -70,13 +77,13 @@ if (!isset($_SESSION['login'])) {
         terbaru kamu di bidang teknologi
       </p>
       <div class="row">
-        <?php for ($i = 0; $i < 10; $i++) : ?>
+        <?php foreach ($courses as $course) : ?>
           <div class="col-lg-3 mt-3">
-            <a href="" class="text-decoration-none card-roadmap">
+            <a href="../courses/course_playing.php?cid=<?= $course['id']; ?>&vid=<?= getVideoId($course['id']); ?>" class="text-decoration-none card-roadmap">
               <div class="card rounded-4 shadow border-0">
                 <div class="card-body px-4 py-3">
-                  <img src="../assets/img/cover2.webp" alt="" class="img-fluid rounded-4 mb-4" />
-                  <h5 class="card-title">Become User-Interface Designer</h5>
+                  <img src="../assets/img-upload/<?= $course['image']; ?>" alt="" class="img-fluid rounded-4 mb-4" />
+                  <h5 class="card-title"><?= $course['name']; ?></h5>
                   <h6 class="card-subtitle mb-2 text-success mt-1">
                     <i class="bi bi-play-fill"></i> Continue Watching
                   </h6>
@@ -84,7 +91,7 @@ if (!isset($_SESSION['login'])) {
               </div>
             </a>
           </div>
-        <?php endfor; ?>
+        <?php endforeach; ?>
       </div>
     </div>
   </div>

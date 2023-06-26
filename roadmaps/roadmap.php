@@ -1,9 +1,22 @@
+<?php
+session_start();
+require '../function/index.php';
+require '../function/utility.php';
+
+$id = $_GET['rid'];
+
+$roadmap = query("SELECT * FROM roadmaps WHERE id = '$id'")[0];
+
+$courses = query("SELECT * FROM courses WHERE roadmap_id = '$id'");
+
+?>
+
 <html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Title | Bangkit</title>
+  <title><?= $roadmap['title']; ?> | Bangkit</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,40 +63,41 @@
   <div class="container mt-navbar">
     <div class="row justify-content-center">
       <div class="col-lg-4 text-center">
-        <img src="../assets/img/ic_flag.svg" alt="" width="170px" />
+        <img src="../assets/img-upload/<?= $roadmap['image']; ?>" alt="" width="170px" />
         <p class="py-1 mt-5 mx-auto w-50 bg-primary-subtle rounded-pill text-primary">
           Our Roadmap
         </p>
-        <h1 class="fw-bold fs-2 mt-5">Full-Stack Website Developer</h1>
+        <h1 class="fw-bold fs-2 mt-5"><?= $roadmap['name']; ?></h1>
         <p class="fw-light">
-          Mempelajari semua hal yang diperlukan dalam membangun website yang
-          cantik, berfungsi baik dan juga mempermudah pengguna ketika
-          berinteraksi.
+          <?= $roadmap['description']; ?>
         </p>
       </div>
     </div>
 
     <div class="row mt-5">
-      <?php for ($i = 1; $i <= 10; $i++) : ?>
+      <?php
+      $i = 1;
+      ?>
+      <?php foreach ($courses as $course) : ?>
         <div class="col-lg-4 mt-4">
           <div class="card rounded-3 shadow-sm border-0">
             <div class="card-body px-4 py-3">
               <div class="mb-3 d-flex justify-content-between align-items-center">
                 <div class="bg-secondary-subtle rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px">
-                  <span class="fw-bold fs-5"><?= $i ?></span>
+                  <span class="fw-bold fs-5"><?= $i++ ?></span>
                 </div>
                 <i class="bi bi-bar-chart-fill text-primary fs-3"></i>
               </div>
-              <img src="../assets/img/cover1.webp" alt="" class="img-fluid rounded-4 mb-4" />
-              <h5 class="card-title">Become User-Interface...</h5>
+              <img src="../assets/img-upload/<?= $course['image']; ?>" alt="" class="img-fluid rounded-4 mb-4" />
+              <h5 class="card-title"><?= $course['name']; ?></h5>
               <h6 class="card-subtitle mb-2 text-body-secondary">
-                20 Videos • 77 Minutes
+                <?= video_count($course['id']); ?> Videos • <?= total_duration($course['id']); ?> Minutes
               </h6>
-              <a href="" class="btn btn-primary w-100 rounded-5 mt-3 fw-bold">Learn Now</a>
+              <a href="../courses/course.php?cid=<?= $course['id']; ?>" class="btn btn-primary w-100 rounded-5 mt-3 fw-bold">Learn Now</a>
             </div>
           </div>
         </div>
-      <?php endfor; ?>
+      <?php endforeach; ?>
     </div>
 
   </div>

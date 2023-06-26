@@ -1,3 +1,14 @@
+<?php
+session_start();
+require '../function/index.php';
+require '../function/utility.php';
+
+$roadmaps = query("SELECT * FROM roadmaps");
+
+$courses_count = query("SELECT COUNT(*) FROM courses ")
+
+?>
+
 <html lang="en">
 
 <head>
@@ -56,22 +67,22 @@
       </p>
     </div>
     <div class="row my-5 card-group">
-      <?php for ($i = 0; $i < 10; $i++) : ?>
+      <?php foreach ($roadmaps as $roadmap) : ?>
         <div class="col-lg-3 mt-4">
           <div class="card rounded-3 shadow-sm p-2 border-0" style="height: 310px">
             <div class="card-body px-4 py-3 position-relative">
-              <img src="../assets/img/ic_flag.svg" alt="" class="img-fluid rounded-5 pt-2" style="width: 65px" />
+              <img src="../assets/img-upload/<?= $roadmap['image']; ?>" alt="" class="img-fluid rounded-5 pt-2" style="width: 65px" />
               <div class="mt-5">
-                <h5 class="card-title text-dark fw-bold">Full-Stack Website</h5>
-                <p class="fs-6 fw-light">14 Courses Avaliable</p>
+                <h5 class="card-title text-dark fw-bold"><?= $roadmap['name']; ?></h5>
+                <p class="fs-6 fw-light"><?= courses_count($roadmap['id']) ?> Courses Avaliable</p>
                 <div class="text-center">
-                  <a href="" class="btn btn-roadmap w-75 bg-body-secondary rounded-pill text-decoration-none text-dark fw-bold fs-6 position-absolute start-50 translate-middle-x" style="bottom: 13">Start Journey</a>
+                  <a href="roadmap.php?rid=<?= $roadmap['id']; ?>" class="btn btn-roadmap w-75 bg-body-secondary rounded-pill text-decoration-none text-dark fw-bold fs-6 position-absolute start-50 translate-middle-x" style="bottom: 13">Start Journey</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      <?php endfor; ?>
+      <?php endforeach; ?>
     </div>
   </div>
 

@@ -1,3 +1,21 @@
+<?php
+session_start();
+require '../function/index.php';
+require '../function/utility.php';
+
+$id = $_GET['cid'];
+
+$vid = $_GET['vid'];
+
+$course = query("SELECT * FROM courses WHERE id = '$id'")[0];
+
+$videos = query("SELECT * FROM videos WHERE course_id = '$id'");
+
+$videoPlay = query("SELECT * FROM videos WHERE id = '$vid'")[0];
+
+
+?>
+
 <html lang="en">
 
 <head>
@@ -51,43 +69,44 @@
     </div>
   </nav>
 
+
+
   <div class="container-xxl" style="margin-top: 120px">
     <div class="row">
       <div class="col-lg-3">
         <div class="card border-0 rounded-4 shadow" style="height: 500px">
-          <span class="p-3 fw-bold shadow">12 videos (35 minutes)</span>
+          <span class="p-3 fw-bold shadow"><?= video_count($course['id']); ?> videos (35 minutes)</span>
           <div class="card-body overflow-auto">
             <ul class="list-unstyled">
-              <?php for ($i = 0; $i < 12; $i++) : ?>
+              <?php foreach ($videos as $video) : ?>
                 <li class="mt-3">
-                  <a class="w-100 btn py-2 bg-body-secondary rounded-pill text-decoration-none text-dark btn-play" href="#">
+                  <a class="w-100 btn py-2 bg-body-secondary rounded-pill text-decoration-none text-dark btn-play" href="course_playing.php?cid=<?= $id; ?>&vid=<?= $video['id']; ?>">
                     <div class="d-flex justify-content-start align-items-center fw-light">
                       <i class="bi bi-play-circle-fill fs-5"></i>
                       <div class="d-flex flex-column text-start ms-3">
-                        <span>Persiapan Slicing</span>
-                        <span style="font-size: 12px">5 mins</span>
+                        <span><?= $video['title']; ?></span>
+                        <span style="font-size: 12px"><?= get_minutes($video['id']); ?> mins</span>
                       </div>
                     </div>
                   </a>
                 </li>
-              <?php endfor; ?>
+              <?php endforeach; ?>
             </ul>
           </div>
         </div>
       </div>
       <div class="col-lg-9">
         <div class="ratio ratio-16x9">
-          <iframe src="https://www.youtube-nocookie.com/embed/j1HGOY32s2Y?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="rounded-4 shadow-lg"></iframe>
+          <iframe src="<?= $videoPlay['url']; ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="rounded-4 shadow-lg"></iframe>
         </div>
         <div class="d-flex mt-3 justify-content-between">
           <div class="">
-            <h3 class="fw-bold">Course Trailler</h3>
+            <h3 class="fw-bold"><?= $videoPlay['title']; ?></h3>
             <p class="fw-light">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo
-              fugiat rerum inventore.
+              <?= $videoPlay['description']; ?>
             </p>
           </div>
-          <a href="" class="btn btn-primary h-25 px-5 py-2 fw-bold rounded-pill">Next</a>
+          <!-- <a href="course_playing.php?cid=<?= $id; ?>&vid=<?= $video['id'] + 1; ?>" class="btn btn-primary h-25 px-5 py-2 fw-bold rounded-pill">Next</a> -->
         </div>
       </div>
     </div>
