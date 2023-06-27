@@ -57,7 +57,7 @@ if (isset($_POST["submit"])) {
               </button>
             </form>
             <p class="text-center">
-              Already have a account? <a href="/login/index.php">Login here</a>
+              Already have a account? <a href="<?= getRootURL(); ?>/login/index.php">Login here</a>
             </p>
           </div>
         </div>

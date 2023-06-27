@@ -33,29 +33,21 @@ require 'function/index.php';
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item mx-3">
-            <a class="nav-link active" aria-current="page" href="sales/">Flash Sale</a>
+            <a class="nav-link active" aria-current="page" href="<?= getRootURL(); ?>/sales/">Flash Sale</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-3 active" href="<?= getRootURL(); ?>/courses">Course</a>
+            <a class="nav-link mx-3 active" href="<?= getRootURL(); ?>/courses">Courses</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-3 active" href="<?= getRootURL(); ?>/roadmaps/">Roadmap</a>
+            <a class="nav-link mx-3 active" href="<?= getRootURL(); ?>/roadmaps/">Roadmaps</a>
           </li>
         </ul>
       </div>
-      <div class="auth">
 
-        <?php
-        if (!isset($_SESSION['login'])) :
-        ?>
-          <ul class="navbar-nav">
-            <li class="nav-item mx-3">
-              <a class="py-3 px-4 bg-body-secondary rounded-pill text-decoration-none text-dark fw-bold" href="<?= getRootURL() ?>/login">Masuk/Daftar</a>
-            </li>
-          </ul>
-        <?php
-        endif;
-        ?>
+
+      <?php
+      if (isset($_SESSION['login'])) :
+      ?>
         <div class="auth d-flex">
           <p class="mt-3 me-3">Hi, <?= $_SESSION['name']; ?></p>
           <div class="dropdown">
@@ -79,7 +71,19 @@ require 'function/index.php';
             </ul>
           </div>
         </div>
-      </div>
+      <?php
+      else :
+      ?>
+        <div class="auth">
+          <ul class="navbar-nav">
+            <li class="nav-item mx-3">
+              <a class="py-3 px-4 bg-body-secondary rounded-pill text-decoration-none text-dark fw-bold" href="<?= getRootURL() ?>/login">Masuk/Daftar</a>
+            </li>
+          </ul>
+        </div>
+      <?php
+      endif;
+      ?>
     </div>
   </nav>
 

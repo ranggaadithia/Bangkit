@@ -5,7 +5,7 @@ require '../function/utility.php';
 
 $id = $_SESSION['course_id'];
 
-$vid = query("SELECT * FROM videos WHERE course_id = '$id'");
+$vid = query("SELECT * FROM videos WHERE course_id = '$id'")[0];
 
 
 ?>

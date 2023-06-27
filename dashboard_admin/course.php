@@ -37,9 +37,9 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
 
 
   <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-">
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+      ">
     <div class="container py-2">
       <a class="navbar-brand" href="#">
         <img src="../assets/img/logo.svg" alt="Bangkit" width="55" />
@@ -49,28 +49,38 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$roadmap_id'");
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-5">
-          <a href="" class="text-decoration-none text-dark">My Dashboard </a>
+          <a href="<?= getRootURL(); ?>/dashboard_admin" class="text-decoration-none text-dark">My Dashboard </a>
         </ul>
       </div>
-      <div class="auth d-flex">
-        <p class="mt-3 me-3">Hi, Rangga</p>
-        <div class="dropdown">
-          <a class="dropdown-toggle d-flex align-items-center text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            <div class="profile-initial">
-              <span>R</span>
-            </div>
-          </a>
-
-          <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li>
+      <?php
+      if (isset($_SESSION['login'])) :
+      ?>
+        <div class="auth d-flex">
+          <p class="mt-3 me-3">Hi, <?= $_SESSION['name']; ?></p>
+          <div class="dropdown">
+            <a class="dropdown-toggle d-flex align-items-center text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="profile-initial">
+                <span><?= substr($_SESSION['name'], 0, 1); ?></span>
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" aria-labelledby="dropdownMenuLink">
+              <?php
+              if ($_SESSION['role'] == 'admin') :
+              ?>
+                <li><a class="dropdown-item" href="<?= getRootURL(); ?>/dashboard_admin">Dashboard Admin</a></li>
+              <?php
+              endif;
+              ?>
+              <li><a class="dropdown-item" href="<?= getRootURL(); ?>/dashboard">Dashboard</a></li>
               <hr class="dropdown-divider" />
-            </li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
-          </ul>
+              </li>
+              <li><a class="dropdown-item" href="<?= getRootURL(); ?>/logout">Logout</a></li>
+            </ul>
+          </div>
         </div>
-      </div>
+      <?php
+      endif;
+      ?>
     </div>
   </nav>
 

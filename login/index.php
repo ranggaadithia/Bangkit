@@ -89,7 +89,7 @@ if (isset($_SESSION["role"])) {
               </button>
             </form>
             <p class="text-center">
-              Don't have an account yet? <a href="/register/index.php">Register here</a>
+              Don't have an account yet? <a href="<?= getRootURL(); ?>/register/index.php">Register here</a>
             </p>
           </div>
         </div>

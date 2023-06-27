@@ -16,7 +16,7 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$id'");
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title><?= $roadmap['title']; ?> | Bangkit</title>
+  <title><?= $roadmap['name']; ?> | Bangkit</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,10 +26,7 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$id'");
 </head>
 
 <body class="bg-body-tertiary">
-  <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(10px);
-      ">
+  <nav class="navbar navbar-expand-lg fixed-top shadows-lg" style="background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); ">
     <div class="container py-2">
       <a class="navbar-brand" href="#">
         <img src="../assets/img/logo.svg" alt="Bangkit" width="55" />
@@ -40,23 +37,57 @@ $courses = query("SELECT * FROM courses WHERE roadmap_id = '$id'");
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item mx-3">
-            <a class="nav-link active" aria-current="page" href="sales/">Flash Sale</a>
+            <a class="nav-link active" aria-current="page" href="<?= getRootURL(); ?>/sales/">Flash Sale</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-3 active" href="courses/">Course</a>
+            <a class="nav-link mx-3 active" href="<?= getRootURL(); ?>/courses">Courses</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link mx-3 active" href="roadmaps/">Roadmap</a>
+            <a class="nav-link mx-3 active" href="<?= getRootURL(); ?>/roadmaps/">Roadmaps</a>
           </li>
         </ul>
       </div>
-      <div class="auth">
-        <ul class="navbar-nav">
-          <li class="nav-item mx-3">
-            <a class="py-3 px-4 bg-body-secondary rounded-pill text-decoration-none text-dark fw-bold" href="#">Masuk/Daftar</a>
-          </li>
-        </ul>
-      </div>
+
+
+      <?php
+      if (isset($_SESSION['login'])) :
+      ?>
+        <div class="auth d-flex">
+          <p class="mt-3 me-3">Hi, <?= $_SESSION['name']; ?></p>
+          <div class="dropdown">
+            <a class="dropdown-toggle d-flex align-items-center text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="profile-initial">
+                <span><?= substr($_SESSION['name'], 0, 1); ?></span>
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" aria-labelledby="dropdownMenuLink">
+              <?php
+              if ($_SESSION['role'] == 'admin') :
+              ?>
+                <li><a class="dropdown-item" href="<?= getRootURL(); ?>/dashboard_admin">Dashboard Admin</a></li>
+              <?php
+              endif;
+              ?>
+              <li><a class="dropdown-item" href="<?= getRootURL(); ?>/dashboard">Dashboard</a></li>
+              <hr class="dropdown-divider" />
+              </li>
+              <li><a class="dropdown-item" href="<?= getRootURL(); ?>/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      <?php
+      else :
+      ?>
+        <div class="auth">
+          <ul class="navbar-nav">
+            <li class="nav-item mx-3">
+              <a class="py-3 px-4 bg-body-secondary rounded-pill text-decoration-none text-dark fw-bold" href="<?= getRootURL() ?>/login">Masuk/Daftar</a>
+            </li>
+          </ul>
+        </div>
+      <?php
+      endif;
+      ?>
     </div>
   </nav>
 
